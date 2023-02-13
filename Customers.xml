@@ -1,0 +1,38 @@
+<Customers>
+    <Customer Id="1">
+        <Name>John</Name>
+        <Age>Qwerty</Age>
+        <Address>
+            <Street>Street A</Street>
+            <City>City A</City>
+            <PostalCode>xxxyyy</PostalCode>
+        </Address>
+    </Customer>
+    <Customer Id="2">
+        <Name>Robert</Name>
+        <Age>Uiop</Age>
+        <Address>
+            <Street>Street B</Street>
+            <City>City B</City>
+            <PostalCode>xxxyyy</PostalCode>
+        </Address>
+    </Customer>
+    <Customer Id="3">
+        <Name>Alice</Name>
+        <Age>McDonald</Age>
+        <Address>
+            <Street>Street C</Street>
+            <City>City C</City>
+            <PostalCode>xxxyyy</PostalCode>
+        </Address>
+    </Customer>
+    <Customer Id="4">
+        <Name>JSON</Name>
+        <Age>Connor</Age>
+        <Address>
+            <Street>Valerio St</Street>
+            <City>Los Angeles</City>
+            <PostalCode>CA 19828</PostalCode>
+        </Address>
+    </Customer>
+</Customers>

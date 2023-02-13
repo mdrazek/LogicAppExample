@@ -1,0 +1,150 @@
+{
+    "$schema": "https://schema.management.azure.com/providers/Microsoft.Logic/schemas/2016-06-01/workflowdefinition.json#",
+    "contentVersion": "1.0.0.0",
+    "parameters": {},
+    "triggers": {
+        "manual": {
+            "type": "Request",
+            "kind": "Http",
+            "inputs": {
+                "schema": {
+                    "properties": {
+                        "Customers": {
+                            "properties": {
+                                "Customer": {
+                                    "items": {
+                                        "properties": {
+                                            "Address": {
+                                                "properties": {
+                                                    "City": {
+                                                        "type": "string"
+                                                    },
+                                                    "PostalCode": {
+                                                        "type": "string"
+                                                    },
+                                                    "Street": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "Age": {
+                                                "type": "string"
+                                            },
+                                            "Name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "Name",
+                                            "Age",
+                                            "Address"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            }
+        }
+    },
+    "actions": {
+        "Compose": {
+            "runAfter": {
+                "XML_Validation": [
+                    "Succeeded"
+                ]
+            },
+            "type": "Compose",
+            "inputs": "@json(xml(triggerBody()))"
+        },
+        "Parse_JSON": {
+            "runAfter": {
+                "Compose": [
+                    "Succeeded"
+                ]
+            },
+            "type": "ParseJson",
+            "inputs": {
+                "content": "@outputs('Compose')",
+                "schema": {
+                    "properties": {
+                        "Customers": {
+                            "properties": {
+                                "Customer": {
+                                    "items": {
+                                        "properties": {
+                                            "Address": {
+                                                "properties": {
+                                                    "City": {
+                                                        "type": "string"
+                                                    },
+                                                    "PostalCode": {
+                                                        "type": "string"
+                                                    },
+                                                    "Street": {
+                                                        "type": "string"
+                                                    }
+                                                },
+                                                "type": "object"
+                                            },
+                                            "Age": {
+                                                "type": "string"
+                                            },
+                                            "Name": {
+                                                "type": "string"
+                                            }
+                                        },
+                                        "required": [
+                                            "Name",
+                                            "Age",
+                                            "Address"
+                                        ],
+                                        "type": "object"
+                                    },
+                                    "type": "array"
+                                }
+                            },
+                            "type": "object"
+                        }
+                    },
+                    "type": "object"
+                }
+            }
+        },
+        "Response": {
+            "runAfter": {
+                "Parse_JSON": [
+                    "Succeeded"
+                ]
+            },
+            "type": "Response",
+            "kind": "Http",
+            "inputs": {
+                "body": "@last(body('Parse_JSON')?['Customers']?['Customer'])",
+                "headers": {
+                    "Content-Type": "application/json"
+                },
+                "statusCode": 200
+            }
+        },
+        "XML_Validation": {
+            "runAfter": {},
+            "type": "XmlValidation",
+            "inputs": {
+                "content": "@{triggerBody()}",
+                "integrationAccount": {
+                    "schema": {
+                        "name": "Customers"
+                    }
+                }
+            }
+        }
+    },
+    "outputs": {}
+}
